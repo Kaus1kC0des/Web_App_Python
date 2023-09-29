@@ -26,8 +26,12 @@ def home():
 @app.route('/post/<int:post_id>')
 def post(post_id):
     cursor = db.cursor()
-    cursor.execute(f'SELECT * FROM posts WHERE id = %s', (int(post_id)))
-    post = {'post_id':cursor.fetchone()[0],'title':cursor.fetchone()[1],'content':cursor.fetchone()[2]}
+    cursor.execute('SELECT * FROM posts')
+    posts = {}
+    values = cursor.fetchall()
+    for i in range(len(values)):
+        posts[i] = {'title': values[i][1], 'content': values[i][2]}
+    post = posts.get(post_id)
     if not post:
         return render_template('404.jinja2', message=f'A post with id {post_id} was not found.')
     return render_template('post.jinja2', post=post)
