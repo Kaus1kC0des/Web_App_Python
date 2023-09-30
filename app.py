@@ -3,17 +3,12 @@ import pymysql as sql
 
 db = sql.connect(host='localhost',user='root',password='Govind@1950',database='FlaskApp')
 app = Flask(__name__)
-# posts = {
-#     0: {
-#         'title': 'Hello, world',
-#         'content': 'This is my first blog post!'
-#     }
-# }
+
 cursor = db.cursor()
 cursor.execute('SELECT * FROM posts')
 posts = {}
 values = cursor.fetchall()
-for i in range(len(values)):
+for i in range(1,len(values)+1):
     posts[i] = {'title':values[i][1],'content':values[i][2]}
 
 
@@ -29,7 +24,7 @@ def post(post_id):
     cursor.execute('SELECT * FROM posts')
     posts = {}
     values = cursor.fetchall()
-    for i in range(len(values)):
+    for i in range(1,len(values)+1):
         posts[i] = {'title': values[i][1], 'content': values[i][2]}
     post = posts.get(post_id)
     if not post:
